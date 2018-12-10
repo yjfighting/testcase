@@ -4,7 +4,7 @@ import json
 '''
 fp = open("../dataconfig/ratelist.json")
 data=json.load(fp)
-print(data['ratelist01'])
+print(data['Data26587'])
 '''
 
 class OperationJson:
@@ -21,11 +21,25 @@ class OperationJson:
 		#这种方法用完json文件之后会自动关闭，不需要再次close
 		with open("../dataconfig/ratelist.json") as fp:
 			data = json.load(fp)
+			#print(type(data))
+			#print(data)
 			return data
+
+	'''	
+	def read_head(self):
+		#获取head参数
+		with open("../dataconfig/reqhead.json") as fp:
+			head = json.load(fp)
+			rehead = str(head)
+			return rehead
+	'''
 	#根据关键字获取数据
 	def get_data(self,idvalue):
 		return self.data[idvalue]
 
+
 if __name__ == '__main__':
 	opjson = OperationJson()
-	print(opjson.get_data("ratelist01"))
+	print(opjson.get_data("Data26587"))
+	print(type(opjson.get_data("Data26587")))
+

@@ -1,7 +1,8 @@
 #coding:utf-8
+from data import data_config
 from util.operation_excel import OperationExcel
 from util.operation_json import OperationJson
-import data_config
+#import data.data_config as a
 
 class GetData:
 	def __init__(self):
@@ -14,7 +15,7 @@ class GetData:
 	#获取是否执行
 	def get_is_run(self,row):
 		flag = None
-		col = global_var.get_run()
+		col = data_config.get_run()
 		run_model = self.opera_excel.get_cell_value(row,col)
 		if run_model == 'Y':
 			flag = True
@@ -24,28 +25,28 @@ class GetData:
 
 	#是否携带header
 	def is_header(self,row):
-		col = global_var.get_header()
+		col = data_config.get_header()
 		header = self.opera_excel.get_cell_value(row,col)
 		if header == 'Y':
-			return global_var.get_header_value()
+			return data_config.get_header_value()
 		else:
 			return None
 
 	#获取请求方式
 	def get_request_method(self,row):
-		col = global_var.get_way()
+		col = int(data_config.get_way())
 		request_method = self.opera_excel.get_cell_value(row,col)
 		return request_method
 
 	#获取URL
 	def get_request_url(self,row):
-		col = global_var.get_url()
+		col = int(data_config.get_url())
 		url = self.opera_excel.get_cell_value(row,col)
 		return url
 
 	#获取请求数据
 	def get_request_data(self,row):
-		col = global_var.get_data()
+		col = int(data_config.get_data())
 		data = self.opera_excel.get_cell_value(row,col)
 		if data == '':
 			return None
@@ -60,11 +61,43 @@ class GetData:
 		return request_data
 
 	#获取预期结果
-	def get_expect_data(self):
-		col = global_var.get_result()
-		result_data = opera_excel.get_cell_value(row,col)
+	def get_expect_data(self, row):
+		col = int(data_config.get_expresult())
+		result_data = self.opera_excel.get_cell_value(row,col)
 		if result_data =='':
 			return None
 		else:
 			return result_data
 
+	#写入实际结果
+	def write_result(self,row,value):
+		col = int(data_config.get_actresult())
+		actresult = self.opera_excel.write_value(row,col,value)
+		return actresult
+
+	#获取依赖数据的key
+	def get_depend_key(self,row):
+		col = int(data_config.get_defield())
+		depend_key = self.opera_excel.get_cell_value(row,col)
+		if depend_key == '':
+			return None
+		else:
+			return depend_key
+
+	#判断是否有case依赖
+	def is_depend(self,row):
+		col = int(data_config.get_decase())
+		depend_case_id = self.opera_excel.get_cell_value(row,col)
+		if depend_case_id == "":
+			return None
+		else:
+			return depend_case_id
+
+	#获取数据依赖的字段
+	def get_depend_field(self,row):
+		col = int(data_config.get_defield())
+		depend_field = self.opera_excel.get_cell_value(row,col)
+		if depend_field == "":
+			return None
+		else:
+			return depend_field

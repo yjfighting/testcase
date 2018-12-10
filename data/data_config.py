@@ -7,12 +7,13 @@ class global_var:
 	run = '2'
 	request_way = '3'
 	header = '4'
-	hotelid = '5'
+	rehead = '5'
 	data = '6'
 	case_depend = '7'
 	data_depend = '8'
-	file_depend = '9'
-	result = '10'
+	field_depend = '9'
+	exp_result = '10'
+	actual_result = '11'
 
 #获取caseid
 def get_id():
@@ -32,13 +33,13 @@ def get_header():
 #获取header的值,先写死
 def get_header_value():
 	header = {
-		"UserID":"3",
-		"TimeStamp":"1516156123",
-		"Sign":"FC7B4D3405863A6D06DC4D6961B708BF"
+		'Content-Type': 'application/x-www-form-urlencoded'
 	}
-#获取hotelID
-def get_hotelid():
-	return global_var.hotelid
+	return header
+#获取接口请求参数中的head参数值
+def get_rehead():
+	rehead = '{{"UserID":3,"TimeStamp":"1516156123","Sign":"FC7B4D3405863A6D06DC4D6961B708BF"}}'
+	return rehead
 #获取请求参数
 def get_data():
 	return global_var.data
@@ -48,9 +49,12 @@ def get_decase():
 #获取data依赖
 def get_dedata():
 	return global_var.data_depend
-#获取文件依赖
-def get_defile():
-	return global_var.file_depend
+#获取字段依赖
+def get_defield():
+	return global_var.field_depend
 #获取预期结果
-def get_result():
-	return global_var.result
+def get_expresult():
+	return global_var.exp_result
+#获取实际结果
+def get_actresult():
+	return global_var.actual_result
