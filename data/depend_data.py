@@ -63,6 +63,6 @@ class DependData:
 
         print(rate_code_list)
         print(attachment_key_list)
-        return rate_code_list,attachment_key_list
+        return [rate_code_list,attachment_key_list]
 
 
