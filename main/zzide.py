@@ -22,19 +22,26 @@ f.close()
 obj = json.loads(content)
 
 a = obj['result']['Result'][0]['RoomList']
-print(type(a))
-i = 0
-j = 0
-rateinfoList = []
-ratecodelist = []
-attchmentlist = []
-for i in range(0,len(a)):
-    rateinfoList.append(a[i]['RateInfoList'])
-    #print(rateinfoList[0])
-    for j in range(0,len(rateinfoList[i])):
-        ratecodelist.append(a[i]['RateInfoList'][j]['RateCode'])
-        attchmentlist.append(a[i]['RateInfoList'][j]['AttachmentKey'])
-        #print(rateinfoList,attchmentlist)
+b = obj['result']['Result'][0]['RoomList'][0]['HotelId']
+c = obj['result']['Result'][0]['SessionId']
+d = obj['result']['Code']
+if obj['result']['Code']==0:
+    print(d)
+    print(type(a))
+    i = 0
+    j = 0
+    rateinfoList = []
+    ratecodelist = []
+    attchmentlist = []
+    for i in range(0,len(a)):
+        rateinfoList.append(a[i]['RateInfoList'])
+        #print(rateinfoList[0])
+        for j in range(0,len(rateinfoList[i])):
+            ratecodelist.append(a[i]['RateInfoList'][j]['RateCode'])
+            attchmentlist.append(a[i]['RateInfoList'][j]['AttachmentKey'])
+            #print(rateinfoList,attchmentlist)
 
-print(type(obj))
-print(ratecodelist,attchmentlist)
+    print(type(obj))
+    print(ratecodelist,attchmentlist)
+else:
+    print('1')

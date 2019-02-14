@@ -37,9 +37,9 @@ class OperationJson:
 	def get_data(self,idvalue):
 		return self.data[idvalue]
 
-
+'''
 if __name__ == '__main__':
 	opjson = OperationJson()
 	print(opjson.get_data("Data26587"))
 	print(type(opjson.get_data("Data26587")))
-
+'''

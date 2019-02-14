@@ -4,6 +4,7 @@ from base.runmethod import RunMethod
 from data.get_data import GetData
 #from jsonpath_rw import jsonpath,parse
 import json
+from util.connect_db import OperaMysql
 
 #处理所有数据依赖的相关问题
 class DependData:
@@ -11,6 +12,7 @@ class DependData:
         self.opera_excel = OperationExcel()
         self.case_id = case_id
         self.data=GetData()
+        self.opera_db = OperaMysql()
 
     #通过caseid获取该case的整行数据
     def get_case_line_data(self):
@@ -39,20 +41,28 @@ class DependData:
         print(type(response_data))
         response_data_dict = json.loads(response_data)
         print(type(response_data_dict))
-        #拿到RoomList
-        roomlist = response_data_dict['result']['Result'][0]['RoomList']
-        rateinfoList = []
-        rate_code_list=[]
-        attachment_key_list = []
-        i = 0
-        j = 0
-        #遍历response_data_dict循环获取ratecode和attachmentkey
-        for i in range(0, len(roomlist)):
-            rateinfoList.append(roomlist[i]['RateInfoList'])
+        code = response_data_dict['result']['Code']
+        if code == 0:
+            #拿到RoomList
+            roomlist = response_data_dict['result']['Result'][0]['RoomList']
+            hotelid = response_data_dict['result']['Result'][0]['RoomList'][0]['HotelId']
+            sessionid = response_data_dict['result']['Result'][0]['SessionId']
+            pk = '64b7a5f65a2ac326070699ba651691cc'
+            rateinfoList = []
+            rate_code_list=[]
+            attachment_key_list = []
+            i = 0
+            j = 0
+            #遍历response_data_dict循环获取ratecode和attachmentkey
+            for i in range(0, len(roomlist)):
+                rateinfoList.append(roomlist[i]['RateInfoList'])
             # print(rateinfoList[0])
-            for j in range(0, len(rateinfoList[i])):
-                rate_code_list.append(roomlist[i]['RateInfoList'][j]['RateCode'])
-                attachment_key_list.append(roomlist[i]['RateInfoList'][j]['AttachmentKey'])
+                for j in range(0, len(rateinfoList[i])):
+                    rate_code_list.append(roomlist[i]['RateInfoList'][j]['RateCode'])
+                    attachment_key_list.append(roomlist[i]['RateInfoList'][j]['AttachmentKey'])
+                    listra =[(sessionid,hotelid,roomlist[i]['RateInfoList'][j]['RateCode'],roomlist[i]['RateInfoList'][j]['AttachmentKey'],pk)]
+                    sqlinsert = """insert into test.RatePolicy(SessionId,HotelId,RateCode,attchment,pk) VALUES (%s,%s,%s,%s,%s)"""
+                    self.opera_db.insert_many_db(sqlinsert,listra)
 
         #在结果集中找字段
         #depend_data_a = ["result"]["Result"][0]["roomlist"][0]["RateInfoList"][0][depend_data]
@@ -61,8 +71,10 @@ class DependData:
         #rate_code_list = [match.value for match in parse('result.Result[0].RoomList[0].RateInfoList[*].RateCode').find(response_data_dict)]
         #返回list的第一个结果
 
-        print(rate_code_list)
-        print(attachment_key_list)
-        return [rate_code_list,attachment_key_list]
+            print(rate_code_list)
+            print(attachment_key_list)
+            return [rate_code_list,attachment_key_list,sessionid]
+        else:
+            return None
 
 
